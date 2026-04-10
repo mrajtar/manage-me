@@ -1,6 +1,7 @@
 import type { Project } from "../models/Project";
 
 const STORAGE_KEY = "projects";
+const ACTIVE_PROJECT_KEY = "activeProjectId";
 
 export const projectApi = {
   getAll(): Project[] {
@@ -34,5 +35,13 @@ export const projectApi = {
 
   getById(id: string): Project | undefined {
     return this.getAll().find(p => p.id === id);
+  },
+
+  setActiveProject(id: string) {
+  localStorage.setItem(ACTIVE_PROJECT_KEY, id);
+  },
+
+  getActiveProjectId(): string | null {
+  return localStorage.getItem(ACTIVE_PROJECT_KEY);
   }
 };
