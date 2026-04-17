@@ -7,6 +7,7 @@ import { ProjectList } from "./components/ProjectList";
 import { storyApi } from "./api/StoryApi";
 import { StoryList } from "./components/StoryList";
 import { StoryForm } from "./components/StoryForm";
+import { UserInfo } from "./components/UserInfo";
 
 function App() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -72,6 +73,9 @@ const handleUpdateStory = (story: Story) => {
 
   return (
     <div>
+      <div style={{ position: "absolute", top: 10, right: 20}}>
+        <UserInfo />
+      </div>
       <h1>ManageMe</h1>
       <ProjectForm onAdd={handleAdd} />
       <ProjectList

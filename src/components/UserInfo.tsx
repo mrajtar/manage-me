@@ -5,7 +5,7 @@ export const UserInfo = () => {
 
   return (
     <div>
-        {user.name} {user.lastName}
+        {user.name} {user.lastName}, {user.role}
     </div>
   );
 };
