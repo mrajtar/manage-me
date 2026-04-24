@@ -7,7 +7,12 @@ type Props = {
   onSelect: (id: string) => void;
 };
 
-export const ProjectList = ({ projects, onDelete, onUpdate, onSelect}: Props) => {
+export const ProjectList = ({
+  projects,
+  onDelete,
+  onUpdate,
+  onSelect,
+}: Props) => {
   const handleEdit = (project: Project) => {
     const name = prompt("New name:", project.name);
     const description = prompt("New description:", project.description);
@@ -19,7 +24,7 @@ export const ProjectList = ({ projects, onDelete, onUpdate, onSelect}: Props) =>
 
   return (
     <ul>
-      {projects.map(p => (
+      {projects.map((p) => (
         <li key={p.id}>
           <strong>{p.name}</strong> - {p.description}
           <button onClick={() => handleEdit(p)}>Edit</button>

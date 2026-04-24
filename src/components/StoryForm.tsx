@@ -25,20 +25,23 @@ export const StoryForm = ({ projectId, onAdd }: Props) => {
       projectId: projectId,
       createdAt: new Date().toISOString(),
       status: "todo",
-      ownerId: user.id
+      ownerId: user.id,
     };
 
     onAdd(story);
     setName("");
     setDescription("");
-    setPriority("low")
+    setPriority("low");
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <input value={name} onChange={e => setName(e.target.value)} />
-      <input value={description} onChange={e => setDescription(e.target.value)} />
-      <select onChange={e => setPriority(e.target.value as any)}>
+      <input value={name} onChange={(e) => setName(e.target.value)} />
+      <input
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+      <select onChange={(e) => setPriority(e.target.value as any)}>
         <option value="low">Low</option>
         <option value="medium">Medium</option>
         <option value="high">High</option>

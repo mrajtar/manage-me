@@ -8,12 +8,16 @@ export const storyApi = {
     return data ? JSON.parse(data) : [];
   },
 
+  getById(id: string) {
+    return this.getAll().find((s) => s.id === id);
+  },
+
   saveAll(stories: Story[]) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(stories));
   },
 
   getByProject(projectId: string): Story[] {
-    return this.getAll().filter(s => s.projectId === projectId);
+    return this.getAll().filter((s) => s.projectId === projectId);
   },
 
   create(story: Story) {
@@ -23,14 +27,14 @@ export const storyApi = {
   },
 
   update(updated: Story) {
-    const stories = this.getAll().map(s =>
-      s.id === updated.id ? updated : s
+    const stories = this.getAll().map((s) =>
+      s.id === updated.id ? updated : s,
     );
     this.saveAll(stories);
   },
 
   delete(id: string) {
-    const stories = this.getAll().filter(s => s.id !== id);
+    const stories = this.getAll().filter((s) => s.id !== id);
     this.saveAll(stories);
-  }
+  },
 };

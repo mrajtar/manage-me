@@ -4,13 +4,14 @@ type Props = {
   stories: Story[];
   onDelete: (id: string) => void;
   onUpdate: (story: Story) => void;
+  onSelect: (id: string) => void;
 };
 
-export const StoryList = ({ stories, onDelete, onUpdate }: Props) => {
+export const StoryList = ({ stories, onDelete, onUpdate, onSelect }: Props) => {
   const grouped = {
-    todo: stories.filter(s => s.status === "todo"),
-    doing: stories.filter(s => s.status === "doing"),
-    done: stories.filter(s => s.status === "done")
+    todo: stories.filter((s) => s.status === "todo"),
+    doing: stories.filter((s) => s.status === "doing"),
+    done: stories.filter((s) => s.status === "done"),
   };
 
   return (
@@ -18,23 +19,24 @@ export const StoryList = ({ stories, onDelete, onUpdate }: Props) => {
       {Object.entries(grouped).map(([status, items]) => (
         <div key={status}>
           <h3>{status.toUpperCase()}</h3>
-          {items.map(s => (
+          {items.map((s) => (
             <div key={s.id}>
               {s.name} ({s.priority})
               <button onClick={() => onDelete(s.id)}>Delete</button>
-                <select
-                    value={s.status}
-                    onChange={e =>
-                    onUpdate({
-                        ...s,
-                        status: e.target.value as "todo" | "doing" | "done"
-                        })
-                        }
-                        >
-                    <option value="todo">Todo</option>
-                    <option value="doing">Doing</option>
-                    <option value="done">Done</option>
-                    </select>
+              <select
+                value={s.status}
+                onChange={(e) =>
+                  onUpdate({
+                    ...s,
+                    status: e.target.value as "todo" | "doing" | "done",
+                  })
+                }
+              >
+                <option value="todo">Todo</option>
+                <option value="doing">Doing</option>
+                <option value="done">Done</option>
+              </select>
+              <button onClick={() => onSelect(s.id)}>Select</button>
             </div>
           ))}
         </div>

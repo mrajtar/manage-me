@@ -5,21 +5,21 @@ const MOCK_USERS: User[] = [
     id: "1",
     name: "Adam",
     lastName: "Lewandowski",
-    role: "admin"
+    role: "admin",
   },
   {
     id: "2",
     name: "Anna",
     lastName: "Sznajder",
-    role: "developer"
+    role: "developer",
   },
   {
     id: "3",
     name: "Sebastian",
     lastName: "Król",
-    role: "devops"
-  }
-]
+    role: "devops",
+  },
+];
 
 export class userApi {
   private static instance: userApi;
@@ -41,7 +41,7 @@ export class userApi {
   getCurrentUser(): User {
     return this.currentUser!;
   }
-  
+
   getAllUsers(): User[] {
     return this.users;
   }

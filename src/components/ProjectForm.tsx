@@ -15,7 +15,7 @@ export const ProjectForm = ({ onAdd }: Props) => {
     const newProject: Project = {
       id: crypto.randomUUID(),
       name,
-      description
+      description,
     };
 
     onAdd(newProject);
@@ -27,13 +27,13 @@ export const ProjectForm = ({ onAdd }: Props) => {
     <form onSubmit={handleSubmit}>
       <input
         value={name}
-        onChange={e => setName(e.target.value)}
+        onChange={(e) => setName(e.target.value)}
         placeholder="Name"
         required
       />
       <input
         value={description}
-        onChange={e => setDescription(e.target.value)}
+        onChange={(e) => setDescription(e.target.value)}
         placeholder="Description"
         required
       />
