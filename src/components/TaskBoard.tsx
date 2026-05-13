@@ -21,96 +21,75 @@ export const TaskBoard = ({
   };
 
   const users = userApi
-    .getInstance()
-    .getAllUsers()
+    .getAll()
     .filter((u) => u.role === "developer" || u.role === "devops");
 
   return (
-    <div style={{ width: "100%" }}>
-      <h3 style={{ textAlign: "center" }}>Kanban</h3>
+    <div className="w-100 mb-5">
+      <h3 className="text-center mb-4">Kanban</h3>
 
-      <div style={{ display: "flex", gap: 30, justifyContent: "center" }}>
+      <div className="d-flex gap-4 justify-content-center flex-wrap">
         {Object.entries(grouped).map(([status, items]) => (
           <div
             key={status}
-            style={{
-              minWidth: 260,
-              padding: 10,
-              border: "1px solid #ccc",
-              borderRadius: 10,
-            }}
+            className="card border p-3"
+            style={{ minWidth: "280px", flex: "1 1 0" }}
           >
-            <h4 style={{ textAlign: "center" }}>{status.toUpperCase()}</h4>
+            <h4 className="text-center mb-3 text-uppercase">{status}</h4>
 
-            {items.length === 0 && (
-              <p style={{ textAlign: "center", opacity: 0.6 }}>brak</p>
-            )}
+            <div className="d-flex flex-column gap-3">
+              {items.map((t) => (
+                <div key={t.id} className="card p-3 shadow-sm border-0">
+                  <div className="fw-bold mb-1">
+                    {t.name}{" "}
+                    <span className="badge bg-secondary ms-1">
+                      {t.priority}
+                    </span>
+                  </div>
+                  <div className="small mb-2">{t.description}</div>
 
-            {items.map((t) => (
-              <div
-                key={t.id}
-                style={{
-                  border: "1px solid #ddd",
-                  borderRadius: 8,
-                  padding: 10,
-                  marginBottom: 10,
-                }}
-              >
-                <div style={{ fontWeight: 600 }}>
-                  {t.name} ({t.priority})
+                  <div className="small mb-3">
+                    <strong>est:</strong> {t.estimatedHours}h &bull;{" "}
+                    <strong>spent:</strong> {t.spentHours}h
+                  </div>
+
+                  <div className="d-flex gap-2 flex-wrap">
+                    {t.status === "todo" && (
+                      <select
+                        className="form-select form-select-sm w-auto"
+                        defaultValue=""
+                        onChange={(e) => {
+                          const userId = e.target.value;
+                          if (userId) onAssignUser(t, userId);
+                          e.currentTarget.value = "";
+                        }}>
+                        <option value="">Assign user</option>
+                        {users.map((u) => (
+                          <option key={u.id} value={u.id}>
+                            {u.name} {u.lastName} ({u.role})
+                          </option>
+                        ))}
+                      </select>
+                    )}
+
+                    {t.status !== "done" && (
+                      <button className="btn btn-success btn-sm" onClick={() => onComplete(t)}>Mark done</button>
+                    )}
+                    <button className="btn btn-danger btn-sm" onClick={() => onDelete(t.id)}>Delete</button>
+                  </div>
+
+                  <div className="mt-3" style={{ fontSize: "0.7rem" }}>
+                    <div>created: {new Date(t.createdAt).toLocaleString()}</div>
+                    {t.startedAt && (
+                      <div>start: {new Date(t.startedAt).toLocaleString()}</div>
+                    )}
+                    {t.finishedAt && (
+                      <div>end: {new Date(t.finishedAt).toLocaleString()}</div>
+                    )}
+                  </div>
                 </div>
-                <div style={{ fontSize: 12, opacity: 0.8 }}>
-                  {t.description}
-                </div>
-
-                <div style={{ fontSize: 12, marginTop: 6 }}>
-                  est: {t.estimatedHours}h • spent: {t.spentHours}h
-                </div>
-
-                <div
-                  style={{
-                    display: "flex",
-                    gap: 8,
-                    marginTop: 10,
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <button onClick={() => onDelete(t.id)}>Delete</button>
-
-                  {t.status === "todo" && (
-                    <select
-                      defaultValue=""
-                      onChange={(e) => {
-                        const userId = e.target.value;
-                        if (userId) onAssignUser(t, userId);
-                        e.currentTarget.value = "";
-                      }}
-                    >
-                      <option value="">Assign user…</option>
-                      {users.map((u) => (
-                        <option key={u.id} value={u.id}>
-                          {u.name} {u.lastName} ({u.role})
-                        </option>
-                      ))}
-                    </select>
-                  )}
-
-                  {t.status !== "done" && (
-                    <button onClick={() => onComplete(t)}>Mark done</button>
-                  )}
-                </div>
-
-                <div style={{ fontSize: 11, marginTop: 8, opacity: 0.8 }}>
-                  created: {new Date(t.createdAt).toLocaleString()}
-                  {t.startedAt && (
-                    <> • start: {new Date(t.startedAt).toLocaleString()}</>
-                  )}
-                  {t.finishedAt && (
-                    <> • end: {new Date(t.finishedAt).toLocaleString()}</>
-                  )}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         ))}
       </div>

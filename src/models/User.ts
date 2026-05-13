@@ -1,6 +1,11 @@
+export type Role = "admin" | "devops" | "developer" | "guest";
+
 export interface User {
   id: string;
+  email: string;
   name: string;
   lastName: string;
-  role: "admin" | "devops" | "developer";
+  role: Role;
+  isBlocked: boolean;
+  createdAt: string;
 }

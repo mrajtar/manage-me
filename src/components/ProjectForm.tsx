@@ -24,20 +24,25 @@ export const ProjectForm = ({ onAdd }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div className="card p-4 mb-4 shadow-sm">
+      <h3 className="mb-3">Add project</h3>
+    <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
       <input
+        className="form-control"
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="Name"
         required
       />
       <input
+        className="form-control"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Description"
         required
       />
-      <button type="submit">Add</button>
+      <button className="btn btn-primary" type="submit">Add</button>
     </form>
+    </div>
   );
 };

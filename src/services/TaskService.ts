@@ -19,23 +19,23 @@ export const completeTask = (task: Task): Task => {
   };
 };
 
-export const updateStoryStatus = (storyId: string) => {
-  const tasks = taskApi.getByStory(storyId);
+export const updateStoryStatus = async (storyId: string) => {
+  const tasks = await taskApi.getByStory(storyId);
 
   if (tasks.length === 0) return;
 
   const allDone = tasks.every((t) => t.status === "done");
   const anyDoing = tasks.some((t) => t.status === "doing");
 
-  const story = storyApi.getById(storyId);
+  const story = await storyApi.getById(storyId);
   if (!story) return;
 
   if (allDone && story.status !== "done") {
-    storyApi.update({ ...story, status: "done" });
+    await storyApi.update({ ...story, status: "done" });
     return;
   }
 
   if (anyDoing && story.status === "todo") {
-    storyApi.update({ ...story, status: "doing" });
+    await storyApi.update({ ...story, status: "doing" });
   }
 };

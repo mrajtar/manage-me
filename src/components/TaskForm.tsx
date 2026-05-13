@@ -36,28 +36,37 @@ export const TaskForm = ({ storyId, onAdd }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Name"
-      />
-      <input
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        placeholder="Description"
-      />
-      <input
-        type="number"
-        value={hours}
-        onChange={(e) => setHours(+e.target.value)}
-      />
-      <select onChange={(e) => setPriority(e.target.value)}>
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
-      <button>Add task</button>
-    </form>
+    <div className="card p-4 mb-4 shadow-sm">
+      <h3 className="mb-3">Add task</h3>
+      <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
+        <input
+          className="form-control"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Name"
+          required/>
+        <input
+          className="form-control"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Description"
+          required/>
+        <input
+          className="form-control"
+          type="number"
+          value={hours}
+          onChange={(e) => setHours(+e.target.value)}
+          required/>
+        <select 
+          className="form-select" 
+          value={priority} 
+          onChange={(e) => setPriority(e.target.value)}>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <button className="btn btn-primary" type="submit">Add task</button>
+      </form>
+    </div>
   );
 };

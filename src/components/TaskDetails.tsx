@@ -8,45 +8,53 @@ type Props = {
 
 export const TaskDetails = ({ task, onUpdate }: Props) => {
   const users = userApi
-    .getInstance()
-    .getAllUsers()
+    .getAll()
     .filter((u) => u.role !== "admin");
 
   return (
-    <div>
-      <h3>{task.name}</h3>
-      <p>{task.description}</p>
-      <p>Status: {task.status}</p>
+    <div className="card p-4 mb-4 shadow-sm">
+      <h3 className="mb-2">{task.name}</h3>
+      <p className="text-muted mb-3">{task.description}</p>
 
-      <select
-        onChange={(e) =>
-          onUpdate({
-            ...task,
-            ownerId: e.target.value,
-            status: "doing",
-            startedAt: new Date().toISOString(),
-          })
-        }
-      >
-        <option>Assign user</option>
-        {users.map((u) => (
-          <option key={u.id} value={u.id}>
-            {u.name}
+      <div className="mb-4">
+        <strong>Status: </strong>
+        <span className="badge bg-secondary">{task.status}</span>
+      </div>
+
+      <div className="d-flex flex-wrap gap-2 align-items-center">
+        <select
+          className="form-select w-auto"
+          defaultValue=""
+          onChange={(e) =>
+            onUpdate({
+              ...task,
+              ownerId: e.target.value,
+              status: "doing",
+              startedAt: new Date().toISOString(),
+            })
+          }>
+          <option value="" disabled>
+            Assign user
           </option>
-        ))}
-      </select>
+          {users.map((u) => (
+            <option key={u.id} value={u.id}>
+              {u.name}
+            </option>
+          ))}
+        </select>
 
-      <button
-        onClick={() =>
-          onUpdate({
-            ...task,
-            status: "done",
-            finishedAt: new Date().toISOString(),
-          })
-        }
-      >
-        Mark as done
-      </button>
+        <button
+          className="btn btn-success"
+          onClick={() =>
+            onUpdate({
+              ...task,
+              status: "done",
+              finishedAt: new Date().toISOString(),
+            })
+          }>
+          Mark as done
+        </button>
+      </div>
     </div>
   );
 };

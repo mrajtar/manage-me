@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Story } from "../models/Story";
-import { userApi } from "../api/UserApi";
+import { useAuth } from "../context/AuthContext";
 
 type Props = {
   projectId: string;
@@ -12,7 +12,8 @@ export const StoryForm = ({ projectId, onAdd }: Props) => {
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState<"low" | "medium" | "high">("low");
 
-  const user = userApi.getInstance().getCurrentUser();
+  const { user } = useAuth();
+  if (!user) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,18 +36,37 @@ export const StoryForm = ({ projectId, onAdd }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input value={name} onChange={(e) => setName(e.target.value)} />
-      <input
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <select onChange={(e) => setPriority(e.target.value as any)}>
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
-      <button type="submit">Add</button>
-    </form>
+    <div className="card shadow-sm p-4 mb-4">
+      <h4 className="mb-3">Add Story</h4>
+
+      <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
+        <input
+          className="form-control"
+          placeholder="Story name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+
+        <input
+          className="form-control"
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+
+        <select
+          className="form-select"
+          value={priority}
+          onChange={(e) => setPriority(e.target.value as any)}>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+
+        <button className="btn btn-primary" type="submit">
+          Add
+        </button>
+      </form>
+    </div>
   );
 };

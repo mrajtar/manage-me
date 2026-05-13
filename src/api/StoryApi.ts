@@ -1,40 +1,9 @@
-import type { Story } from "../models/Story";
+import { STORAGE_PROVIDER } from "../config/storage";
 
-const STORAGE_KEY = "stories";
+import { storyLocalApi } from "./local/StoryLocalApi";
+import { storyFirestoreApi } from "./firestore/StoryFirestoreApi";
 
-export const storyApi = {
-  getAll(): Story[] {
-    const data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
-  },
-
-  getById(id: string) {
-    return this.getAll().find((s) => s.id === id);
-  },
-
-  saveAll(stories: Story[]) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(stories));
-  },
-
-  getByProject(projectId: string): Story[] {
-    return this.getAll().filter((s) => s.projectId === projectId);
-  },
-
-  create(story: Story) {
-    const stories = this.getAll();
-    stories.push(story);
-    this.saveAll(stories);
-  },
-
-  update(updated: Story) {
-    const stories = this.getAll().map((s) =>
-      s.id === updated.id ? updated : s,
-    );
-    this.saveAll(stories);
-  },
-
-  delete(id: string) {
-    const stories = this.getAll().filter((s) => s.id !== id);
-    this.saveAll(stories);
-  },
-};
+export const storyApi =
+  STORAGE_PROVIDER === "firestore"
+    ? storyFirestoreApi
+    : storyLocalApi;

@@ -1,48 +1,48 @@
-import type { User } from "../models/User";
+import type { Role, User } from "../models/User";
 
-const MOCK_USERS: User[] = [
-  {
-    id: "1",
-    name: "Adam",
-    lastName: "Lewandowski",
-    role: "admin",
+const STORAGE_KEY = "users";
+
+export const userApi = {
+  getAll(): User[] {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as User[]) : [];
   },
-  {
-    id: "2",
-    name: "Anna",
-    lastName: "Sznajder",
-    role: "developer",
+
+  saveAll(users: User[]) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
   },
-  {
-    id: "3",
-    name: "Sebastian",
-    lastName: "Król",
-    role: "devops",
+
+  getById(id: string): User | undefined {
+    return this.getAll().find((u) => u.id === id);
   },
-];
 
-export class userApi {
-  private static instance: userApi;
-  private users: User[] = [];
-  private currentUser: User | null = null;
+  getByEmail(email: string): User | undefined {
+    return this.getAll().find(
+      (u) => u.email.toLowerCase() === email.toLowerCase(),
+    );
+  },
 
-  private constructor() {
-    this.users = MOCK_USERS;
-    this.currentUser = MOCK_USERS[0];
-  }
+  upsert(user: User): User {
+    const all = this.getAll();
+    const idx = all.findIndex((u) => u.id === user.id);
+    if (idx >= 0) all[idx] = user;
+    else all.unshift(user);
+    this.saveAll(all);
+    return user;
+  },
 
-  static getInstance() {
-    if (!userApi.instance) {
-      userApi.instance = new userApi();
-    }
-    return userApi.instance;
-  }
+  setRole(userId: string, role: Role) {
+    const all = this.getAll().map((u) =>
+      u.id === userId ? { ...u, role } : u,
+    );
+    this.saveAll(all);
+  },
 
-  getCurrentUser(): User {
-    return this.currentUser!;
-  }
+  setBlocked(userId: string, isBlocked: boolean) {
+    const all = this.getAll().map((u) =>
+      u.id === userId ? { ...u, isBlocked } : u,
+    );
+    this.saveAll(all);
+  },
 
-  getAllUsers(): User[] {
-    return this.users;
-  }
-}
+};

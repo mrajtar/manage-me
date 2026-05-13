@@ -23,15 +23,20 @@ export const ProjectList = ({
   };
 
   return (
-    <ul>
+    <div className="d-flex flex-column gap-3 mb-5">
       {projects.map((p) => (
-        <li key={p.id}>
-          <strong>{p.name}</strong> - {p.description}
-          <button onClick={() => handleEdit(p)}>Edit</button>
-          <button onClick={() => onDelete(p.id)}>Delete</button>
-          <button onClick={() => onSelect(p.id)}>Choose</button>
-        </li>
+        <div key={p.id}className="card-shadow-sm p-3">
+        <div className="d-flex align-items-center flex-wrap gap-3">
+            <h5 className="mb-1">Name: {p.name}</h5>
+              Description: {p.description}
+        </div>
+        <div className="d-flex gap-2">
+          <button className="btn btn-primary btn-sm" onClick={() => onSelect(p.id)}>Choose</button>
+          <button className="btn btn-primary btn-sm" onClick={() => handleEdit(p)}>Edit</button>
+          <button className="btn btn-danger btn-sm" onClick={() => onDelete(p.id)}>Delete</button>
+        </div>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 };
