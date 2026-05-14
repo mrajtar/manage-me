@@ -22,12 +22,10 @@ export const TaskBoard = ({
 
   const users = userApi
     .getAll()
-    .filter((u) => u.role === "developer" || u.role === "devops");
+    .filter((u) => u.role === "developer" || u.role === "devops" || u.role === "admin");
 
   return (
     <div className="w-100 mb-5">
-      <h3 className="text-center mb-4">Kanban</h3>
-
       <div className="d-flex gap-4 justify-content-center flex-wrap">
         {Object.entries(grouped).map(([status, items]) => (
           <div
