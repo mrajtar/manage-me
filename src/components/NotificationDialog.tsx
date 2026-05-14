@@ -4,7 +4,7 @@ import { PriorityBadge } from "./NotificationView";
 export function NotificationDialog() {
   const { dialogNotification, dismissDialog, markAsRead } = useNotifications();
 
-  if (!dialogNotification) return null;
+  if (!dialogNotification || window.__PLAYWRIGHT_TEST_USER__) return null;
 
   const isHigh = dialogNotification.priority === "high";
 

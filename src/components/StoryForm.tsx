@@ -49,7 +49,7 @@ export const StoryForm = ({ projectId, onAdd }: Props) => {
 
         <input
           className="form-control"
-          placeholder="Description"
+          placeholder="Story Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
@@ -64,7 +64,7 @@ export const StoryForm = ({ projectId, onAdd }: Props) => {
         </select>
 
         <button className="btn btn-primary" type="submit">
-          Add
+          Add Story
         </button>
       </form>
     </div>

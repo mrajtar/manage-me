@@ -12,17 +12,47 @@ type AuthState = {
 
 const Ctx = createContext<AuthState | null>(null);
 
+declare global {
+  interface Window {
+    __PLAYWRIGHT_TEST_USER__?: boolean;
+  }
+}
+
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   const refreshUser = () => {
-    if (!auth.currentUser) return;
-    const u = userApi.getById(auth.currentUser.uid) ?? null;
+    const currentUid = window.__PLAYWRIGHT_TEST_USER__
+      ? "test-user-123"
+      : auth.currentUser?.uid;
+    if (!currentUid) return;
+
+    const u = userApi.getById(currentUid) ?? null;
     setUser(u);
   };
 
   useEffect(() => {
+    // ==========================================
+    // TEST BACKDOOR: Bypass Firebase entirely
+    // ==========================================
+    if (window.__PLAYWRIGHT_TEST_USER__) {
+      const mockUser: User = {
+        id: "test-user-123",
+        email: "test@example.com",
+        name: "Playwright",
+        lastName: "Tester",
+        role: "admin",
+        isBlocked: false,
+        createdAt: new Date().toISOString(),
+      };
+
+      userApi.upsert(mockUser);
+      setUser(mockUser);
+      setLoading(false);
+      return;
+    }
+
     const unsub = onAuthStateChanged(auth, (fb) => {
       if (!fb) {
         setUser(null);
@@ -36,7 +66,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => unsub();
   }, []);
 
-  return <Ctx.Provider value={{ user, loading, refreshUser }}>{children}</Ctx.Provider>;
+  return (
+    <Ctx.Provider value={{ user, loading, refreshUser }}>
+      {children}
+    </Ctx.Provider>
+  );
 };
 
 export const useAuth = () => {

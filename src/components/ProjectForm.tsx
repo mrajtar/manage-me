@@ -31,17 +31,17 @@ export const ProjectForm = ({ onAdd }: Props) => {
         className="form-control"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        placeholder="Name"
+        placeholder="Project Name"
         required
       />
       <input
         className="form-control"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        placeholder="Description"
+        placeholder="Project Description"
         required
       />
-      <button className="btn btn-primary" type="submit">Add</button>
+      <button className="btn btn-primary" type="submit">Add project</button>
     </form>
     </div>
   );

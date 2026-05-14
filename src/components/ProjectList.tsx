@@ -31,7 +31,7 @@ export const ProjectList = ({
               Description: {p.description}
         </div>
         <div className="d-flex gap-2">
-          <button className="btn btn-primary btn-sm" onClick={() => onSelect(p.id)}>Choose</button>
+          <button className="btn btn-primary btn-sm" onClick={() => onSelect(p.id)}>Select</button>
           <button className="btn btn-primary btn-sm" onClick={() => handleEdit(p)}>Edit</button>
           <button className="btn btn-danger btn-sm" onClick={() => onDelete(p.id)}>Delete</button>
         </div>
